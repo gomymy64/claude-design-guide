@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Материалы к Уроку Claude Design | Мастодонт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #151515;
+    --border: rgba(255, 255, 255, 0.08);
+    --text: #ffffff;
+    --text-dim: #a0a0a0;
+    --text-faint: rgba(255, 255, 255, 0.55);
+    --accent1: #FF6B00;
+    --accent2: #c8ff00;
+    --grad: linear-gradient(135deg, #FF6B00 0%, #c8ff00 100%);
+    --grad-soft: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(200, 255, 0, 0.15));
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* Noise texture */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Glow background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(255, 107, 0, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 50%, rgba(200, 255, 0, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 40% 90%, rgba(255, 107, 0, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Navbar */
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8, 8, 8, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+}
+
+.nav::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 107, 0, 0.6) 30%, rgba(200, 255, 0, 0.6) 70%, transparent 100%);
+}
+
+.nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 60px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.brand {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: var(--text);
+    transition: opacity 0.2s;
+}
+
+.brand:hover { opacity: 0.7; }
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.nav-link:hover {
+    color: var(--text);
+    border-color: var(--border);
+    background: var(--bg2);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 60px);
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero */
+.hero {
+    padding: clamp(60px, 10vw, 120px) 0 clamp(60px, 10vw, 100px);
+    text-align: center;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    padding: 8px 16px;
+    border: 1px solid rgba(200, 255, 0, 0.3);
+    border-radius: 100px;
+    background: rgba(200, 255, 0, 0.05);
+    margin-bottom: 32px;
+}
+
+.badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    box-shadow: 0 0 8px var(--accent2);
+}
+
+.hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.hero p {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--text-dim);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.5;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--grad);
+    color: #000;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    padding: 18px 36px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 30px rgba(255, 107, 0, 0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(255, 107, 0, 0.4);
+}
+
+/* Section heading */
+.section {
+    padding: clamp(60px, 10vw, 100px) 0;
+    position: relative;
+}
+
+.section-heading {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 48px);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+}
+
+.section-sub {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 48px;
+    max-width: 700px;
+}
+
+/* Grid cards */
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.feature-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--grad);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 107, 0, 0.3);
+}
+
+.feature-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.feature-card h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.5;
+}
+
+/* Tools */
+.tools-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.tool {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+}
+
+.tool:hover {
+    border-color: rgba(200, 255, 0, 0.3);
+    background: var(--bg3);
+}
+
+.tool-info h4 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.tool-info p {
+    font-size: 13px;
+    color: var(--text-dim);
+}
+
+.tool-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tool-badge.free {
+    background: rgba(200, 255, 0, 0.1);
+    color: var(--accent2);
+    border: 1px solid rgba(200, 255, 0, 0.3);
+}
+
+.tool-badge.paid {
+    background: rgba(255, 107, 0, 0.1);
+    color: var(--accent1);
+    border: 1px solid rgba(255, 107, 0, 0.3);
+}
+
+/* Step cards */
+.steps { display: flex; flex-direction: column; gap: 32px; }
+
+.step-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: clamp(28px, 4vw, 44px);
+    position: relative;
+    overflow: hidden;
+}
+
+.step-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--grad);
+}
+
+.step-card::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.step-head {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.step-num {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: clamp(48px, 7vw, 80px);
+    line-height: 1;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    flex-shrink: 0;
+}
+
+.step-title {
+    flex: 1;
+    min-width: 200px;
+}
+
+.step-title h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: clamp(20px, 3vw, 28px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.step-desc {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.step-actions {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.step-actions li {
+    padding-left: 24px;
+    position: relative;
+    font-size: 15px;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.step-actions li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent2);
+    font-weight: 700;
+}
+
+.step-actions a {
+    color: var(--accent2);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(200, 255, 0, 0.4);
+    transition: border-color 0.2s;
+}
+
+.step-actions a:hover { border-bottom-color: var(--accent2); }
+
+.step-settings, .step-hint {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--accent1);
+    padding: 14px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+}
+
+.step-hint { border-left-color: var(--accent2); }
+
+.step-settings strong, .step-hint strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* Prompt block */
+.prompt-block {
+    background: var(--bg3);
+    border-radius: 12px;
+    padding: 22px;
+    margin-top: 20px;
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    background-image: linear-gradient(var(--bg3), var(--bg3)), var(--grad);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 107, 0, 0.06);
+}
+
+.prompt-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.prompt-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+}
+
+.copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+}
+
+.copy-btn.copied {
+    background: var(--accent2);
+    color: #000;
+    border-color: var(--accent2);
+}
+
+.prompt-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Links section */
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.link-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.2s;
+}
+
+.link-card:hover {
+    border-color: rgba(255, 107, 0, 0.3);
+    transform: translateX(4px);
+}
+
+.link-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.link-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.link-info h5 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.link-info p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* CTA */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 40px rgba(255, 107, 0, 0.15); }
+    50% { box-shadow: 0 0 80px rgba(255, 107, 0, 0.25); }
+}
+
+.cta-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: clamp(32px, 5vw, 56px) clamp(32px, 8vw, 100px);
+    margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.cta-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-width: 280px;
+}
+
+.cta-content h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.cta-content h3 span {
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.cta-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--text-faint);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+}
+
+.cta-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--grad);
+    box-shadow: 0 0 8px rgba(255, 107, 0, 0.5);
+    flex-shrink: 0;
+}
+
+.cta-btn {
+    background: var(--grad);
+    color: #000;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    padding: 18px 40px;
+    border-radius: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.2s;
+}
+
+.cta-btn:hover { transform: translateY(-2px); }
+
+/* Footer */
+.footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
+    text-align: center;
+}
+
+.footer-brand {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    color: var(--text);
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.footer-tag {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+}
+
+.footer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.footer-btn:hover {
+    border-color: var(--accent1);
+    color: var(--accent1);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+    background: var(--grad);
+    border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links { gap: 4px; }
+    .nav-link { padding: 6px 10px; font-size: 11px; }
+    .step-head { flex-direction: column; gap: 12px; }
+    .cta-card { flex-direction: column; align-items: stretch; text-align: center; }
+    .cta-badge { justify-content: center; }
+}
+
+@media (min-width: 2000px) {
+    .container { max-width: 1400px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="https://aimastodont.com/" target="_blank" class="brand">МАСТОДОНТ</a>
+        <div class="nav-links">
+            <a href="#tools" class="nav-link">Инструменты</a>
+            <a href="#steps" class="nav-link">Шаги</a>
+            <a href="#links" class="nav-link">Ссылки</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <section class="hero">
+        <span class="badge">МАТЕРИАЛЫ К УРОКУ</span>
+        <h1>Claude Design только что вышел... Разблокируй Суперспособности</h1>
+        <p>Собираем свою дизайн-систему, генерируем слайды, сайты, калькуляторы и анимации одним промптом. Плюс эксклюзивный лайфхак про недельный лимит, которого нет в документации.</p>
+        <a href="https://youtu.be/WI0bhBI8eNU" target="_blank" class="btn-primary">▶ Смотреть на YouTube</a>
+    </section>
+
+    <section class="section" id="learn">
+        <h2 class="section-heading">Что ты научишься делать</h2>
+        <p class="section-sub">Практические навыки которые ты получишь после видео.</p>
+
+        <div class="grid-4">
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>Собирать свою дизайн-систему</h3>
+                <p>Уникальный фирменный стиль в Claude Design за 10 минут.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🌐</span>
+                <h3>Делать сайты и слайды</h3>
+                <p>Лендинги уровня Linear и презентации - одним промптом.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🔥</span>
+                <h3>Снимать лимиты Claude Design</h3>
+                <p>Extra usage toggle - эксклюзивный трюк из этого видео.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🚀</span>
+                <h3>Экспорт в код и деплой</h3>
+                <p>Hand off в Claude Code и выгрузка сайта на Vercel.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="tools">
+        <h2 class="section-heading">Что понадобится</h2>
+        <p class="section-sub">Инструменты из видео - клик по карточке открывает сервис.</p>
+
+        <div class="tools-list">
+            <a href="https://claude.ai/design" target="_blank" class="tool">
+                <div class="tool-info">
+                    <h4>Claude Design</h4>
+                    <p>Основной инструмент урока</p>
+                </div>
+                <span class="tool-badge paid">Pro / Max</span>
+            </a>
+            <a href="https://claude.ai" target="_blank" class="tool">
+                <div class="tool-info">
+                    <h4>Claude (обычный чат)</h4>
+                    <p>Для расширения промптов</p>
+                </div>
+                <span class="tool-badge paid">С подпиской</span>
+            </a>
+            <a href="https://claude.ai/code" target="_blank" class="tool">
+                <div class="tool-info">
+                    <h4>Claude Code</h4>
+                    <p>Экспорт и деплой сайтов</p>
+                </div>
+                <span class="tool-badge paid">С подпиской</span>
+            </a>
+            <a href="https://vercel.com" target="_blank" class="tool">
+                <div class="tool-info">
+                    <h4>Vercel</h4>
+                    <p>Хостинг для сайтов</p>
+                </div>
+                <span class="tool-badge free">Бесплатно</span>
+            </a>
+            <a href="https://linear.app" target="_blank" class="tool">
+                <div class="tool-info">
+                    <h4>Linear</h4>
+                    <p>Референс для сайта</p>
+                </div>
+                <span class="tool-badge free">Бесплатно</span>
+            </a>
+            <a href="https://figma.com" target="_blank" class="tool">
+                <div class="tool-info">
+                    <h4>Figma</h4>
+                    <p>Если есть свои ассеты</p>
+                </div>
+                <span class="tool-badge free">Бесплатно</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="section" id="steps">
+        <h2 class="section-heading">Пошаговая инструкция</h2>
+        <p class="section-sub">Идёшь по шагам сверху вниз - получаешь результат из видео.</p>
+
+        <div class="steps">
+
+            <!-- STEP 1 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">01</div>
+                    <div class="step-title"><h2>Открой Claude Design</h2></div>
+                </div>
+                <p class="step-desc">Зайди на <a href="https://claude.ai" target="_blank" style="color: var(--accent2); text-decoration: none; border-bottom: 1px dashed rgba(200, 255, 0, 0.4);">claude.ai</a>. В левой панели нажми <strong>More → Design</strong>. Откроется рабочая область.</p>
+                <ul class="step-actions">
+                    <li>Слева выбираешь тип генерации: Wireframe (набросок) или High-Fidelity (финальный дизайн с интерактивом)</li>
+                    <li>Справа - твои файлы и проекты</li>
+                    <li>В разделе Examples - готовые шаблоны для старта</li>
+                </ul>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">02</div>
+                    <div class="step-title"><h2>Собери свою дизайн-систему</h2></div>
+                </div>
+                <p class="step-desc">Это анти-хаос. Один раз настраиваешь - все твои будущие проекты будут в едином фирменном стиле.</p>
+                <ul class="step-actions">
+                    <li>Создай папку <strong>Brand</strong> на рабочем столе</li>
+                    <li>Закинь туда: логотипы, фирменные шрифты, иконки, скриншоты сайтов-референсов</li>
+                    <li>Если есть Figma: File → Save local copy → сохрани .fig файл</li>
+                    <li>В Claude Design: Design Systems → Create</li>
+                    <li>Назови систему (например, Mastodont Design System)</li>
+                    <li>Перетащи в окно: папку Brand, .fig файл, все ассеты</li>
+                </ul>
+
+                <div class="prompt-block">
+                    <div class="prompt-head">
+                        <span class="prompt-label">💬 Промпт - Для поля Notes</span>
+                        <button class="copy-btn" data-prompt-id="p1">◻ Copy</button>
+                    </div>
+                    <div class="prompt-text" id="p1">Для моей дизайн-системы мне нравится премиальный тёмный стиль — чёрный фон, один яркий акцентный цвет (кислотный лайм или оранж), никаких генерик-градиентов и AI-слопа. Я делаю контент для предпринимателей которые хотят зарабатывать на AI, поэтому визуал должен быть дерзким, уверенным, про результат и деньги. Типографика жирная и смелая — крупные заголовки, много воздуха, чёткая иерархия.
+
+Когда делаю слайды — один тезис на слайд, никакой воды, крупная цифра или главная мысль в центре внимания. Когда делаю сайты — сильный hero, цифровой вайб, subtle-анимации на скролле, счётчики цифр, ничего лишнего. Во всём — минимализм плюс смелые акценты.</div>
+                </div>
+
+                <div class="step-hint">
+                    <strong>💡 Лайфхак:</strong> прогони короткий промпт через обычного Claude (<a href="https://claude.ai" target="_blank" style="color: var(--accent2);">claude.ai</a>) чтобы он его расширил профессиональной UI/UX терминологией.
+                </div>
+
+                <div class="prompt-block">
+                    <div class="prompt-head">
+                        <span class="prompt-label">💬 Промпт - Расширение через Claude</span>
+                        <button class="copy-btn" data-prompt-id="p2">◻ Copy</button>
+                    </div>
+                    <div class="prompt-text" id="p2">Расширь этот промпт для дизайн-системы, добавь профессиональные UI/UX термины, конкретные цвета, шрифты, принципы композиции. Сохрани суть:
+
+[твой короткий промпт]</div>
+                </div>
+
+                <div class="step-settings">
+                    <strong>⚙️ Финал:</strong> вставляешь расширенную версию в Notes → жмёшь Generate → ждёшь ~5 минут → проходишь ревью UI-элементов.
+                </div>
+            </div>
+
+            <!-- STEP 3 - EXTRA USAGE LIFE HACK -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">03</div>
+                    <div class="step-title"><h2>🔥 Главный лайфхак - Extra usage toggle</h2></div>
+                </div>
+                <p class="step-desc">Claude Design - это <strong>research preview</strong> с <strong>собственным недельным лимитом</strong>, отдельным от обычного Claude и Claude Code. На $20 Pro хватит на 1-2 серьёзных сессии в неделю. Даже на Max за $100-200 можно упереться за одну плотную сессию.</p>
+
+                <p class="step-desc" style="color: var(--text);">Обычная реакция - ждать неделю. Но есть способ лучше:</p>
+
+                <ul class="step-actions">
+                    <li>Зайди в <a href="https://claude.ai/settings/billing" target="_blank">claude.ai/settings/billing</a></li>
+                    <li>Найди секцию <strong>Extra usage</strong></li>
+                    <li>Переключи тоггл в <strong>ON</strong></li>
+                    <li>Справа проверь <strong>Monthly spend limit</strong> - по дефолту $20, ставь сколько не страшно потерять</li>
+                    <li><strong>Auto-reload по умолчанию OFF</strong> - Claude сам деньги не спишет</li>
+                </ul>
+
+                <div class="step-settings">
+                    <strong>⚙️ Важно:</strong> официальная документация Anthropic пишет что Extra usage покрывает только обычный Claude и Claude Code. <strong>На практике - он покрывает и Claude Design тоже.</strong> Claude продолжает генерить по API-тарифу мелкими списаниями с баланса.
+                </div>
+
+                <div class="step-hint">
+                    <strong>💡 Эксклюзив:</strong> ни один русскоязычный обзор Claude Design про этот момент не рассказывает. Теперь ты в курсе.
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">04</div>
+                    <div class="step-title"><h2>Сгенерируй первые слайды</h2></div>
+                </div>
+                <p class="step-desc">Тест генерации в твоём собственном стиле.</p>
+                <ul class="step-actions">
+                    <li>В Claude Design: New Design → High-Fidelity → Slides</li>
+                    <li>Проект назови <strong>Slides test</strong></li>
+                    <li>Design System: выбери свою (ту что сделал на Шаге 02)</li>
+                </ul>
+
+                <div class="prompt-block">
+                    <div class="prompt-head">
+                        <span class="prompt-label">💬 Промпт - 3 слайда про заработок на AI</span>
+                        <button class="copy-btn" data-prompt-id="p3">◻ Copy</button>
+                    </div>
+                    <div class="prompt-text" id="p3">Создай 3 слайда на тему «3 способа реально заработать на AI в 2026 году обычному человеку без технического образования». Один способ — один слайд. Строгий минимализм — одна фокусная точка на слайд: либо крупная цифра, либо смелый заголовок плюс одна поясняющая строка. Никаких стен текста, максимум 15-20 слов копи на слайд. Много воздуха, один акцентный цвет. Укажи реалистичный диапазон месячного дохода в долларах — крупной видимой цифрой, не в тексте.</div>
+                </div>
+
+                <div class="step-settings"><strong>⚙️ Жмёшь Send</strong> → получаешь готовые слайды в твоём брендбуке.</div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">05</div>
+                    <div class="step-title"><h2>Реверс-инжиниринг дизайна claude.com</h2></div>
+                </div>
+                <p class="step-desc">Если хочешь сделать слайды в стиле конкретного сайта - загружаешь его как референс.</p>
+                <ul class="step-actions">
+                    <li>Создай новый проект → <strong>No Design System</strong> → <strong>Claude landing slides</strong> → Create</li>
+                    <li>Зайди на <a href="https://claude.com" target="_blank">claude.com</a> → сделай 5 скриншотов красивых секций</li>
+                    <li>На странице claude.com жми <strong>Ctrl+A → Ctrl+C</strong> → сохрани текст в <strong>claude-text.txt</strong></li>
+                    <li>Погугли <strong>"Extract HTML code from URL"</strong> → используй любой сервис → вставь claude.com → скачай HTML</li>
+                    <li>Дропай в чат Claude Design: скриншоты, txt-файл, HTML</li>
+                    <li>В шестерёнке настроек выбери модель <strong>Opus 4.7</strong></li>
+                </ul>
+
+                <div class="prompt-block">
+                    <div class="prompt-head">
+                        <span class="prompt-label">💬 Промпт - 5 слайдов в стиле claude.com</span>
+                        <button class="copy-btn" data-prompt-id="p4">◻ Copy</button>
+                    </div>
+                    <div class="prompt-text" id="p4">Создай красивый дек из 5 слайдов на основе дизайн-системы этого сайта: https://claude.com
+
+Слайды должны подавать чёткий обзор Claude — что это, почему это важно и почему это сильнейший AI для реальной работы.
+
+Структура (одна мысль — один слайд):
+1. Hero — «Meet Claude» — одно смелое утверждение
+2. Модели — Opus, Sonnet, Haiku — tier-система
+3. Что он умеет — 3 главных use case как визуальные плитки
+4. Экосистема — Claude Code, Claude Design, API
+5. Как начать — чёткий CTA
+
+Наследуй точную дизайн-систему, типографику и цветовую гамму claude.com. Строгий минимализм — максимум 20 слов на слайд.</div>
+                </div>
+
+                <div class="step-hint">
+                    <strong>💡 Функция Draw:</strong> если нужно что-то поправить - жми на кисть, обводи элемент, пиши в чат "сдвинь сюда" / "сделай отступ больше" → Claude точечно правит. Через Twix можно попросить масштабную переделку.
+                </div>
+            </div>
+
+            <!-- STEP 6 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">06</div>
+                    <div class="step-title"><h2>Сделай лендинг в стиле Linear.app</h2></div>
+                </div>
+                <p class="step-desc">Один из самых мощных юзкейсов. Логика та же - загружаем референс и генерируем.</p>
+                <ul class="step-actions">
+                    <li>Новый проект → <strong>No Design System</strong> → <strong>High-Fidelity</strong> → <strong>Mastodont Site</strong></li>
+                    <li>Собери скриншоты <a href="https://linear.app" target="_blank">linear.app</a> (hero, features, footer)</li>
+                    <li>Скопируй весь текст со страницы в <strong>linear-text.txt</strong></li>
+                    <li>Через HTML extractor получи HTML-версию</li>
+                    <li>Дропай всё в чат</li>
+                </ul>
+
+                <div class="prompt-block">
+                    <div class="prompt-head">
+                        <span class="prompt-label">💬 Промпт - Лендинг в стиле Linear</span>
+                        <button class="copy-btn" data-prompt-id="p5">◻ Copy</button>
+                    </div>
+                    <div class="prompt-text" id="p5">Построй мне красивый лендинг в ТОЧНОМ стиле сайта Linear (HTML, скриншоты, весь текст приложены). Наследуй дизайн-систему, типографику, сетку, цвета, ритм, интерактивность — всю визуальную ДНК Linear.app.
+
+Тема сайта: студия «Мастодонт» — внедрение AI-решений для бизнеса. Помогаем компаниям автоматизировать процессы и запускать AI-продукты. Целевая аудитория — основатели и CEO малого и среднего бизнеса.
+
+Структуру, подход к контенту, визуальные приёмы — бери напрямую из Linear. Не импровизируй, повторяй ДНК.</div>
+                </div>
+
+                <div class="step-settings">
+                    <strong>⚙️ Send</strong> → через 3-5 минут готовый сайт. В правом нижнем углу - переключатель акцентных цветов, меняй на лету.
+                </div>
+            </div>
+
+            <!-- STEP 7 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">07</div>
+                    <div class="step-title"><h2>Экспорт в код и деплой на Vercel</h2></div>
+                </div>
+                <p class="step-desc">Как превратить сгенерированный сайт в реально работающий в интернете.</p>
+                <ul class="step-actions">
+                    <li>В Claude Design жми <strong>Hand off to Claude Code</strong> → <strong>Copy command</strong></li>
+                    <li>Открой десктопный <a href="https://claude.ai/code" target="_blank">Claude Code</a></li>
+                    <li>Вставь скопированную команду → Enter</li>
+                    <li>Claude Code автоматом подтянет все файлы на твой ПК</li>
+                    <li>Пиши в чат: <strong>«Задеплой сайт на Vercel»</strong></li>
+                    <li>Claude проведёт пошагово - нужно вставить токен Vercel</li>
+                </ul>
+
+                <div class="step-hint">
+                    <strong>💡 Важно:</strong> по умолчанию Claude Design выдаёт чистый HTML. Если нужна сложная разработка с анимациями - сразу проси: <strong>«Создай этот дизайн на React или Next.js»</strong>.
+                </div>
+            </div>
+
+            <!-- STEP 8 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">08</div>
+                    <div class="step-title"><h2>Сделай AI ROI калькулятор</h2></div>
+                </div>
+                <p class="step-desc">Интерактивный виджет который можно встроить в любой бизнес-сайт.</p>
+                <ul class="step-actions">
+                    <li>На главной Claude Design зайди в <strong>Examples</strong> → найди пример калькулятора</li>
+                    <li>Скопируй базовый промпт</li>
+                    <li>В обычном <a href="https://claude.ai" target="_blank">Claude</a> попроси переписать под свою задачу</li>
+                </ul>
+
+                <div class="prompt-block">
+                    <div class="prompt-head">
+                        <span class="prompt-label">💬 Промпт - Переработать под свою задачу</span>
+                        <button class="copy-btn" data-prompt-id="p6">◻ Copy</button>
+                    </div>
+                    <div class="prompt-text" id="p6">Перепиши этот промпт под калькулятор окупаемости искусственного интеллекта для B2B услуг. Калькулятор встраивается на лендинг студии «Мастодонт» — внедрение AI в бизнес. Считает сколько сэкономит и заработает предприниматель за 12 месяцев от внедрения AI-автоматизаций.
+
+[оригинальный промпт из Examples]</div>
+                </div>
+
+                <ul class="step-actions">
+                    <li>Вставь расширенный промпт в Claude Design</li>
+                    <li>Подключи свою дизайн-систему</li>
+                    <li><strong>Generate</strong></li>
+                </ul>
+
+                <div class="step-hint">
+                    <strong>💡 Как использовать:</strong> созванивайся с клиентом в Zoom → открывай виджет → играйся цифрами в реальном времени. Или экспортируй код и встраивай калькулятор на свой сайт.
+                </div>
+            </div>
+
+            <!-- STEP 9 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">09</div>
+                    <div class="step-title"><h2>HTML-анимация для интро YouTube</h2></div>
+                </div>
+                <p class="step-desc">Claude пишет не картинку - а живой CSS/HTML код анимации. Открываешь на весь экран, записываешь через OBS и используешь в монтаже.</p>
+                <ul class="step-actions">
+                    <li>Новый проект → <strong>High-Fidelity</strong> → <strong>Intro animation</strong></li>
+                    <li>Подключи свою дизайн-систему</li>
+                </ul>
+
+                <div class="prompt-block">
+                    <div class="prompt-head">
+                        <span class="prompt-label">💬 Промпт - 10-секундная анимация</span>
+                        <button class="copy-btn" data-prompt-id="p7">◻ Copy</button>
+                    </div>
+                    <div class="prompt-text" id="p7">Сделай 10-секундную минималистичную HTML-анимацию для интро YouTube-видео. Чёрный фон, моя дизайн-система.
+
+Текст появляется двумя строками с ударной подачей:
+«AI не заберёт твою работу.
+AI заберёт её у того, кто не юзает AI.»
+
+Первая строка белая, вторая — акцентным цветом, появляется с задержкой и ударом (scale/glitch). После обеих строк снизу мелко появляется подпись: «Сегодня разбираем Claude Design».
+
+Кинематографично, тишина-напряжение-удар.</div>
+                </div>
+
+                <div class="step-settings">
+                    <strong>⚙️ Send</strong> → получишь живую CSS/HTML анимацию → открой на весь экран → запись экрана в OBS → в монтаж.
+                </div>
+            </div>
+
+            <!-- STEP 10 -->
+            <div class="step-card">
+                <div class="step-head">
+                    <div class="step-num">10</div>
+                    <div class="step-title"><h2>Масштабирование через Routines</h2></div>
+                </div>
+                <p class="step-desc">Веб-интерфейс отличный для старта, но упираешься в лимиты браузера. Для конвейера - вытаскиваем систему в код.</p>
+                <ul class="step-actions">
+                    <li>В Claude Design → <strong>Design Systems</strong> → открой свою → <strong>Download as ZIP</strong></li>
+                    <li>Открой <a href="https://claude.ai/code" target="_blank">Claude Code</a></li>
+                    <li>Закинь ZIP в папку проекта</li>
+                    <li>В левой панели - вкладка <strong>Routines</strong> → <strong>New Routine</strong> (local/remote)</li>
+                </ul>
+
+                <div class="step-hint">
+                    <strong>💡 Пример автоматизации:</strong> пишешь сценарий в Google Docs → срабатывает триггер Routine → Claude Code подхватывает текст → применяет твою дизайн-систему → генерирует HTML-анимацию → сохраняет на рабочий стол → отправляет монтажёру в Telegram. Без твоего участия.
+                </div>
+
+                <div class="step-settings">
+                    <strong>🎥 Полный разбор Routines в Claude Code:</strong> <a href="https://www.youtube.com/watch?v=UMC4Z59nK10" target="_blank" style="color: var(--accent2);">отдельное видео на канале</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section" id="links">
+        <h2 class="section-heading">🔗 Все ссылки</h2>
+        <p class="section-sub">Клик по карточке открывает сервис в новой вкладке.</p>
+
+        <div class="links-grid">
+            <a href="https://claude.ai/design" target="_blank" class="link-card">
+                <span class="link-icon">🎨</span>
+                <div class="link-info"><h5>Claude Design</h5><p>claude.ai/design</p></div>
+            </a>
+            <a href="https://claude.ai" target="_blank" class="link-card">
+                <span class="link-icon">💬</span>
+                <div class="link-info"><h5>Claude (обычный чат)</h5><p>claude.ai</p></div>
+            </a>
+            <a href="https://claude.ai/code" target="_blank" class="link-card">
+                <span class="link-icon">💻</span>
+                <div class="link-info"><h5>Claude Code</h5><p>claude.ai/code</p></div>
+            </a>
+            <a href="https://claude.ai/settings/billing" target="_blank" class="link-card">
+                <span class="link-icon">⚡</span>
+                <div class="link-info"><h5>Extra Usage Toggle</h5><p>claude.ai/settings/billing</p></div>
+            </a>
+            <a href="https://vercel.com" target="_blank" class="link-card">
+                <span class="link-icon">🚀</span>
+                <div class="link-info"><h5>Vercel</h5><p>vercel.com</p></div>
+            </a>
+            <a href="https://linear.app" target="_blank" class="link-card">
+                <span class="link-icon">⬛</span>
+                <div class="link-info"><h5>Linear (референс)</h5><p>linear.app</p></div>
+            </a>
+            <a href="https://figma.com" target="_blank" class="link-card">
+                <span class="link-icon">🎭</span>
+                <div class="link-info"><h5>Figma</h5><p>figma.com</p></div>
+            </a>
+            <a href="https://www.youtube.com/watch?v=UMC4Z59nK10" target="_blank" class="link-card">
+                <span class="link-icon">🎥</span>
+                <div class="link-info"><h5>Видео про Routines</h5><p>youtube.com/watch?v=UMC4Z59nK10</p></div>
+            </a>
+        </div>
+    </section>
+
+    <section class="cta-card">
+        <div class="cta-content">
+            <h3>Пошаговый план: как&nbsp;выйти<br>на&nbsp;первые <span>деньги в&nbsp;ИИ</span> в&nbsp;2026</h3>
+            <div class="cta-badge">+ розыгрыш Claude каждые 2 недели</div>
+        </div>
+        <a href="https://t.me/mastodont_aibot?start=agency" target="_blank" class="cta-btn">ЗАБРАТЬ →</a>
+    </section>
+
+</div>
+
+<footer class="footer">
+    <a href="https://aimastodont.com/" target="_blank" class="footer-brand">МАСТОДОНТ</a>
+    <div class="footer-tag">AI и нейросети - просто, по делу</div>
+    <a href="https://www.youtube.com/@aiBoomb" target="_blank" class="footer-btn">YouTube: @aiBoomb</a>
+</footer>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const id = btn.dataset.promptId;
+        const txt = document.getElementById(id).textContent;
+        try {
+            await navigator.clipboard.writeText(txt);
+            btn.classList.add('copied');
+            btn.innerHTML = '✓ Copied!';
+            setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = '◻ Copy';
+            }, 2000);
+        } catch (e) {
+            btn.innerHTML = 'Error';
+        }
+    });
+});
+</script>
+
+</body>
+</html>
