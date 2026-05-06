@@ -596,85 +596,147 @@ body::before {
 }
 
 /* CTA */
-@keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 40px rgba(255, 107, 0, 0.15); }
-    50% { box-shadow: 0 0 80px rgba(255, 107, 0, 0.25); }
+@keyframes ctaGlow {
+    0%, 100% { box-shadow: 0 0 60px rgba(255, 107, 0, 0.06); }
+    50% { box-shadow: 0 0 100px rgba(255, 107, 0, 0.16); }
 }
-
-.cta-card {
+.cta {
     background: var(--bg2);
     border: 1px solid var(--border);
+    padding: clamp(36px, 5vw, 60px) clamp(28px, 5vw, 64px);
+    margin: 80px 0 40px;
     border-radius: 20px;
-    padding: clamp(32px, 5vw, 56px) clamp(32px, 8vw, 100px);
-    margin-top: 80px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 32px;
-    flex-wrap: wrap;
-    animation: pulse-glow 3s ease-in-out infinite;
-}
-
-.cta-content {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    flex: 1;
-    min-width: 280px;
+    gap: clamp(28px, 3vw, 40px);
+    position: relative;
+    animation: ctaGlow 3s ease-in-out infinite;
+    overflow: hidden;
 }
-
-.cta-content h3 {
+.cta::before {
+    content: '';
+    position: absolute;
+    top: -150px; right: -150px;
+    width: 360px; height: 360px;
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.10) 0%, transparent 60%);
+    pointer-events: none;
+}
+.cta::after {
+    content: '';
+    position: absolute;
+    bottom: -120px; left: -120px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(200, 255, 0, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+.cta-title {
     font-family: 'Unbounded', sans-serif;
-    font-weight: 700;
-    font-size: clamp(22px, 3vw, 32px);
-    line-height: 1.25;
+    font-size: clamp(26px, 4.4vw, 52px);
+    line-height: 1.05;
     letter-spacing: -0.01em;
+    color: var(--text);
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
 }
-
-.cta-content h3 span {
+.cta-title .grad {
     background: var(--grad);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
 }
-
-.cta-badge {
+.cta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(20px, 3vw, 40px);
+    position: relative;
+    z-index: 1;
+}
+@media (max-width: 720px) {
+    .cta-grid { grid-template-columns: 1fr; }
+}
+.cta-block-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent1);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+}
+.cta-block-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent1) 0%, transparent 100%);
+}
+.cta-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.cta-list li {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(14px, 1.4vw, 16px);
+    line-height: 1.5;
+    color: var(--text);
+    padding: 9px 0 9px 32px;
+    position: relative;
+    border-bottom: 1px dashed var(--border);
+}
+.cta-list li:last-child { border-bottom: none; }
+.cta-list li::before {
+    position: absolute;
+    left: 0;
+    top: 9px;
+    font-size: 16px;
+}
+.cta-list.checks li::before { content: '✅'; }
+.cta-list.bonuses li:nth-child(1)::before { content: '💰'; }
+.cta-list.bonuses li:nth-child(2)::before { content: '🚀'; }
+.cta-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    padding-top: clamp(24px, 3vw, 36px);
+    position: relative;
+    z-index: 1;
+}
+.cta-free {
     font-family: 'Space Mono', monospace;
     font-size: 13px;
     color: var(--text-faint);
-    letter-spacing: 0.02em;
-    line-height: 1.4;
+    letter-spacing: 0.05em;
 }
-
-.cta-badge::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--grad);
-    box-shadow: 0 0 8px rgba(255, 107, 0, 0.5);
-    flex-shrink: 0;
-}
-
+.cta-free b { color: var(--accent1); font-weight: 700; }
 .cta-btn {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(13px, 1.3vw, 15px);
+    font-weight: 700;
     background: var(--grad);
     color: #000;
-    font-family: 'Unbounded', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.02em;
-    padding: 18px 40px;
-    border-radius: 10px;
+    border: none;
+    padding: 20px 48px;
     text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    cursor: pointer;
     white-space: nowrap;
-    transition: transform 0.2s;
+    display: inline-block;
+    border-radius: 10px;
 }
-
-.cta-btn:hover { transform: translateY(-2px); }
+.cta-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 40px rgba(255, 107, 0, 0.3); }
+@media (max-width: 720px) {
+    .cta-bottom { flex-direction: column; align-items: stretch; text-align: center; }
+    .cta-btn { width: 100%; text-align: center; }
+}
 
 /* Footer */
 .footer {
@@ -737,8 +799,6 @@ body::before {
     .nav-links { gap: 4px; }
     .nav-link { padding: 6px 10px; font-size: 11px; }
     .step-head { flex-direction: column; gap: 12px; }
-    .cta-card { flex-direction: column; align-items: stretch; text-align: center; }
-    .cta-badge { justify-content: center; }
 }
 
 @media (min-width: 2000px) {
@@ -1188,13 +1248,33 @@ AI заберёт её у того, кто не юзает AI.»
         </div>
     </section>
 
-    <section class="cta-card">
-        <div class="cta-content">
-            <h3>Пошаговый план: как&nbsp;выйти<br>на&nbsp;первые <span>деньги в&nbsp;ИИ</span> в&nbsp;2026</h3>
-            <div class="cta-badge">+ розыгрыш Claude каждые 2 недели</div>
+    <a href="https://t.me/IntensivMastaBot" target="_blank" rel="noopener" class="cta" style="text-decoration:none;">
+      <h2 class="cta-title">Первые <span class="grad">$1200</span> на&nbsp;ИИ -<br>бесплатный интенсив</h2>
+
+      <div class="cta-grid">
+        <div>
+          <div class="cta-block-label">Внутри</div>
+          <ul class="cta-list checks">
+            <li>Реальный демо AntiGravity вживую</li>
+            <li>Софт, который за 5 минут находит компании без сайтов с готовыми контактами</li>
+            <li>Кейсы учеников: $1650 за 3 проекта без команды</li>
+          </ul>
         </div>
-        <a href="https://t.me/mastodont_aibot?start=agency" target="_blank" class="cta-btn">ЗАБРАТЬ →</a>
-    </section>
+
+        <div>
+          <div class="cta-block-label">Два бонуса в конце</div>
+          <ul class="cta-list bonuses">
+            <li>50 скучных и самых прибыльных ниш без конкуренции</li>
+            <li>Чек-лист: первые $500 за 7 дней</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cta-bottom">
+        <div class="cta-free"><b>Бесплатно.</b> Навсегда.</div>
+        <span class="cta-btn">Забрать интенсив</span>
+      </div>
+    </a>
 
 </div>
 
